@@ -1,0 +1,57 @@
+#dropdown-btn {
+  background-color: white;
+  border-color: #ccc;
+  padding: .5rem 1rem;
+}
+
+.dropdown-menu {
+	overflow: hidden;
+}
+
+btn {
+  text-align: center;
+  border: 1px solid transparent;
+  vertical-align: center;
+}
+
+.caret-down::before{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .3em;
+    vertical-align: middle;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-left: .3em solid transparent;
+}
+
+.click-close::before{
+	content: 'X';
+}
+
+.navbar {
+	padding-top: 1.25rem;
+	padding-bottom: 1.25rem;u
+
+}
+
+.search-bar {
+	width: 100%;
+}
+
+.nav-link: {
+	padding-top: .25rem;
+	padding-bottom: .25rem;
+	font-size: 2rem;
+}
+
+.navbar-brand: {
+}
+
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
