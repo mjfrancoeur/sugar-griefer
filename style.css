@@ -49,9 +49,18 @@ btn {
 .navbar-brand: {
 }
 
-
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.result-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: #E8E7E7;
+}
+
+.result-col {
+
 }

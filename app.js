@@ -15,43 +15,74 @@ function App() {
   }
 
   $("#searchForm").on('submit', function(event) {
+
     // prevent page from reloading
     event.preventDefault();
 
+    // clear previous search
     clearPrevSearch();
+
     // search request
-    $.get('https://api.nal.usda.gov/ndb/search/?', $("#searchForm").serialize())
-      .done(function(data) {
-        data.list.item.forEach( (el) => {
-          nutrientRequest(el.ndbno);
+    let $searchResults = 
+      $.get(
+        'https://api.nal.usda.gov/ndb/search/?', 
+        $("#searchForm").serialize()
+      )
+        .done(function(data) {
+          console.log(data);
+
+          let results = data.list.item.map(function(result) {
+            return nutrientRequest(result.ndbno);
+          });
+
+          $.when.apply($, results).done(function () {
+            [].slice.call(arguments).forEach( (item) => {
+
+            FOODS.push(new Food({
+              name: item[0].report.foods[0].name,
+              ndbno: item[0].report.foods[0].ndbno,
+              sugars: {
+                value: item[0].report.foods[0].nutrients[0].value,
+                unitOfMeasure: item[0].report.foods[0].nutrients[0].unit
+              },
+              servingSize: item[0].report.foods[0].measure
+            }));
+            });
+
+            render();
+          });
+
         });
-        console.dir(FOODS);
-      })
-  });
+
 
   function clearPrevSearch() {
     FOODS.splice(0);
   }
 
   function nutrientRequest(foodID) {
-    $.get('https://api.nal.usda.gov/ndb/nutrients/?', {
+    return $.get('https://api.nal.usda.gov/ndb/nutrients/?', {
       api_key: 'XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w',
       ndbno: foodID,
       nutrients: '269',
       format: 'json'
-    }).done(function(data) {
-      FOODS.push(new Food({
-        name: data.report.foods[0].name,
-        ndbno: data.report.foods[0].ndbno,
-        sugars: {
-          value: data.report.foods[0].nutrients[0].value,
-          unitOfMeasure: data.report.foods[0].nutrients[0].unit
-        },
-        servingSize: data.report.foods[0].measure
-      }));
-    })
+    });
   }
 
+  function render() {
+    FOODS.forEach( (food) => {
+      const $wrapper = $('<div>').addClass('result-wrapper');
+      const $img = $('<img>').addClass('result-col food-img')
+        .attr('src', 'http://www.cheerios.com/~/media/17EE88F6F39C45E787CE2E1186260B94.ashx').appendTo($wrapper);
+
+      const $textbox = $('<div>').addClass('result-col').appendTo($wrapper);
+
+      const $graph = $('<div>').addClass('result-col').appendTo($wrapper);
+
+      $('#results').append($wrapper);
+    });
+  }
+
+  });
 }
 
 $(App);
