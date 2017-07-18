@@ -32,12 +32,12 @@ btn {
 
 .navbar {
 	padding-top: 1.25rem;
-	padding-bottom: 1.25rem;u
-
+	padding-bottom: 1.25rem;
+  margin-bottom: 0px;
 }
 
 .search-bar {
-	width: 100%;
+	width: 80%;
 }
 
 .nav-link: {
@@ -47,6 +47,11 @@ btn {
 }
 
 .navbar-brand: {
+}
+
+.header-image {
+  height: 400px;
+  overflow: hidden;
 }
 
 img {
@@ -63,4 +68,9 @@ img {
 
 .result-col {
 
+}
+
+.result-textbox {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
 }

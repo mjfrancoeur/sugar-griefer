@@ -29,7 +29,6 @@ function App() {
         $("#searchForm").serialize()
       )
         .done(function(data) {
-          console.log(data);
 
           let results = data.list.item.map(function(result) {
             return nutrientRequest(result.ndbno);
@@ -57,6 +56,7 @@ function App() {
 
   function clearPrevSearch() {
     FOODS.splice(0);
+    $('#results').empty();
   }
 
   function nutrientRequest(foodID) {
@@ -74,7 +74,11 @@ function App() {
       const $img = $('<img>').addClass('result-col food-img')
         .attr('src', 'http://www.cheerios.com/~/media/17EE88F6F39C45E787CE2E1186260B94.ashx').appendTo($wrapper);
 
-      const $textbox = $('<div>').addClass('result-col').appendTo($wrapper);
+      const $textbox = $('<div>').addClass('result-col result-textbox').appendTo($wrapper);
+      const $header = $('<h3>').text(food.name).appendTo($textbox);
+      const $para = $('<h4>').text(food.sugars.value + food.sugars.unitOfMeasure + ' of sugar per serving').appendTo($textbox);
+
+
 
       const $graph = $('<div>').addClass('result-col').appendTo($wrapper);
 
