@@ -29,14 +29,14 @@ function App() {
   function render() {
     FOODS.forEach((food) => {
       const $wrapper = $('<div>').addClass('result-wrapper');
-      const $img = $('<img>').addClass('result-col food-img')
+      $('<img>').addClass('result-col food-img')
         .attr('src', 'http://www.cheerios.com/~/media/17EE88F6F39C45E787CE2E1186260B94.ashx').appendTo($wrapper);
 
       const $textbox = $('<div>').addClass('result-col result-textbox').appendTo($wrapper);
-      const $header = $('<h3>').text(food.name).appendTo($textbox);
-      const $para = $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
+      $('<h3>').text(food.name).appendTo($textbox);
+      $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
 
-      const $graph = $('<div>').addClass('result-col').appendTo($wrapper);
+      $('<div>').addClass('result-col').appendTo($wrapper);
 
       $('#results').append($wrapper);
     });
@@ -51,32 +51,29 @@ function App() {
     clearPrevSearch();
 
     // search request
-    const $searchResults =
-      $.get(
-        'https://api.nal.usda.gov/ndb/search/?',
-        $('#searchForm').serialize(),
-      )
-      .done((data) => {
-        const results = data.list.item.map((result) => {
-          return nutrientRequest(result.ndbno);
+    $.get(
+      'https://api.nal.usda.gov/ndb/search/?',
+      $('#searchForm').serialize(),
+    )
+    .done((data) => {
+      const results = data.list.item.map(result => nutrientRequest(result.ndbno));
+
+      $.when(...results).done(() => {
+        [].slice.call(...results).forEach((item) => {
+          FOODS.push(new Food({
+            name: item[0].report.foods[0].name,
+            ndbno: item[0].report.foods[0].ndbno,
+            sugars: {
+              value: item[0].report.foods[0].nutrients[0].value,
+              unitOfMeasure: item[0].report.foods[0].nutrients[0].unit,
+            },
+            servingSize: item[0].report.foods[0].measure,
+          }));
         });
 
-        $.when.apply($, results).done(() => {
-          [].slice.call(arguments).forEach((item) => {
-            FOODS.push(new Food({
-              name: item[0].report.foods[0].name,
-              ndbno: item[0].report.foods[0].ndbno,
-              sugars: {
-                value: item[0].report.foods[0].nutrients[0].value,
-                unitOfMeasure: item[0].report.foods[0].nutrients[0].unit,
-              },
-              servingSize: item[0].report.foods[0].measure,
-            }));
-          });
-
-          render();
-        });
+        render();
       });
+    });
   });
 }
 
