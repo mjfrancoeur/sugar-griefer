@@ -32,12 +32,12 @@ btn {
 
 .navbar {
 	padding-top: 1.25rem;
-	padding-bottom: 1.25rem;u
-
+	padding-bottom: 1.25rem;
+  margin-bottom: 0px;
 }
 
 .search-bar {
-	width: 100%;
+	width: 80%;
 }
 
 .nav-link: {
@@ -49,9 +49,28 @@ btn {
 .navbar-brand: {
 }
 
+.header-image {
+  height: 400px;
+  overflow: hidden;
+}
 
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.result-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: #E8E7E7;
+}
+
+.result-col {
+
+}
+
+.result-textbox {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
 }
