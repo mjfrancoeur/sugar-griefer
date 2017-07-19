@@ -1,5 +1,13 @@
 function App() {
   const FOODS = [];
+  const DATA = [
+    { name: 'chocolate ice-cream',
+      sugars: 17,
+    },
+    { name: 'cupcake',
+      sugars: 25,
+    },
+  ];
 
   function Food(params) {
     this.name = params.name;
@@ -26,8 +34,14 @@ function App() {
     });
   }
 
+  function renderGraph(food, index) {
+    d3.select(`.result-graph-${index}`)
+      .selectAll('g')
+      .data();
+  }
+
   function render() {
-    FOODS.forEach((food) => {
+    FOODS.forEach((food, index) => {
       const $wrapper = $('<div>').addClass('result-wrapper');
       $('<img>').addClass('result-col food-img')
         .attr('src', 'http://www.cheerios.com/~/media/17EE88F6F39C45E787CE2E1186260B94.ashx').appendTo($wrapper);
@@ -36,11 +50,14 @@ function App() {
       $('<h3>').text(food.name).appendTo($textbox);
       $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
 
-      $('<div>').addClass('result-col').appendTo($wrapper);
+      const $graphbox = $('<div>').addClass(`result-col`).appendTo($wrapper);
+			$('<svg>').addClass(`result-graph-${index}`).appendTo($graphbox);
+      // renderGraph(food, index);
 
       $('#results').append($wrapper);
     });
   }
+
 
 
   $('#searchForm').on('submit', (event) => {
@@ -56,10 +73,12 @@ function App() {
       $('#searchForm').serialize(),
     )
     .done((data) => {
-      const results = data.list.item.map(result => nutrientRequest(result.ndbno));
+      const requestResults = data.list.item.map(result => nutrientRequest(result.ndbno));
 
-      $.when(...results).done(() => {
-        [].slice.call(...results).forEach((item) => {
+			console.log(requestResults);
+      $.when.apply($, requestResults).done((...args) => {
+        [].slice.call(args).forEach((item) => {
+					console.log(item);
           FOODS.push(new Food({
             name: item[0].report.foods[0].name,
             ndbno: item[0].report.foods[0].ndbno,

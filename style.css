@@ -74,3 +74,13 @@ img {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
 }
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
