@@ -80,7 +80,12 @@ img {
 }
 
 .chart text {
-  fill: white;
+  color: white;
   font: 10px sans-serif;
   text-anchor: end;
+}
+
+.result-graph {
+  height: 100%;
+  width: 100%;
 }

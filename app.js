@@ -35,9 +35,24 @@ function App() {
   }
 
   function renderGraph(food, index) {
-    d3.select(`.result-graph-${index}`)
-      .selectAll('g')
-      .data();
+    const testData = [30, 40, 50];
+    const width = 200;
+    const barHeight = 20;
+
+    const scale = d3.scale.linear().domain([0, d3.max(testData)]).range([0, width]);
+
+    const chart = d3.select(`.result-graph-${index}`).attr('width', width).attr('height', barHeight * testData.length);
+
+    const bar = chart.selectAll('g').data(testData).enter().append('g')
+      .attr('transform',(d, i) => { return `translate(0,${i * barHeight})`; });
+
+    bar.append('rect').attr('width', scale).attr('height', barHeight - 1);
+
+     bar.append("text")
+      .attr("x", (d) => { return scale(d) - 3; })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text( (d) => { return d; });
   }
 
   function render() {
@@ -51,10 +66,10 @@ function App() {
       $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
 
       const $graphbox = $('<div>').addClass(`result-col`).appendTo($wrapper);
-			$('<svg>').addClass(`result-graph-${index}`).appendTo($graphbox);
-      // renderGraph(food, index);
-
+			$('<svg>').addClass(`chart result-graph-${index}`).appendTo($graphbox);
       $('#results').append($wrapper);
+       renderGraph(food, index);
+
     });
   }
 
@@ -75,10 +90,8 @@ function App() {
     .done((data) => {
       const requestResults = data.list.item.map(result => nutrientRequest(result.ndbno));
 
-			console.log(requestResults);
       $.when.apply($, requestResults).done((...args) => {
         [].slice.call(args).forEach((item) => {
-					console.log(item);
           FOODS.push(new Food({
             name: item[0].report.foods[0].name,
             ndbno: item[0].report.foods[0].ndbno,
