@@ -67,7 +67,8 @@ img {
 }
 
 .result-col {
-
+  display: grid;
+  grid-template-rows: 1fr;
 }
 
 .result-textbox {
@@ -75,17 +76,22 @@ img {
   grid-template-rows: 1fr 1fr 1fr;
 }
 
+.chart {
+  align-self: center;
+}
+
 .chart rect {
   fill: steelblue;
 }
 
 .chart text {
-  color: white;
+  fill: white;
   font: 10px sans-serif;
   text-anchor: end;
 }
 
 .result-graph {
-  height: 100%;
-  width: 100%;
+  
 }
+
+

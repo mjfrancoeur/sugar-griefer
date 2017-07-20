@@ -1,13 +1,6 @@
 function App() {
   const FOODS = [];
-  const DATA = [
-    { name: 'chocolate ice-cream',
-      sugars: 17,
-    },
-    { name: 'cupcake',
-      sugars: 25,
-    },
-  ];
+  const DATA = [ new Food( {name: 'chocolate ice-cream', sugars: { value: 17, unitOfMeasure: 'g' }}), new Food( {name: 'cupcake', sugars: { value: 25, unitOfMeasure: 'g' }, }) ];
 
   function Food(params) {
     this.name = params.name;
@@ -35,24 +28,31 @@ function App() {
   }
 
   function renderGraph(food, index) {
+    const currentData = DATA.slice(0);
+    currentData.unshift(food);
+
+    const dataVals = currentData.map( (obj) => {
+      return {name: obj.name, value: obj.sugars.value};
+    });
+
     const testData = [30, 40, 50];
     const width = 200;
     const barHeight = 20;
 
-    const scale = d3.scale.linear().domain([0, d3.max(testData)]).range([0, width]);
+    const scale = d3.scale.linear().domain([0, d3.max(dataVals, function(d) { return d.value; })]).range([0, width]);
 
-    const chart = d3.select(`.result-graph-${index}`).attr('width', width).attr('height', barHeight * testData.length);
+    const chart = d3.select(`.result-graph-${index}`).attr('width', width).attr('height', barHeight * dataVals.length);
 
-    const bar = chart.selectAll('g').data(testData).enter().append('g')
+    const bar = chart.selectAll('g').data(dataVals).enter().append('g')
       .attr('transform',(d, i) => { return `translate(0,${i * barHeight})`; });
 
-    bar.append('rect').attr('width', scale).attr('height', barHeight - 1);
+    bar.append('rect').attr('width', function(d) { return scale(d.value); }).attr('height', barHeight - 1);
 
      bar.append("text")
-      .attr("x", (d) => { return scale(d) - 3; })
+      .attr("x", (d) => { return scale(d.value) - 3; })
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
-      .text( (d) => { return d; });
+      .text( (d) => { return `${d.name}: ${d.value}g`; });
   }
 
   function render() {
@@ -65,10 +65,11 @@ function App() {
       $('<h3>').text(food.name).appendTo($textbox);
       $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
 
-      const $graphbox = $('<div>').addClass(`result-col`).appendTo($wrapper);
-			$('<svg>').addClass(`chart result-graph-${index}`).appendTo($graphbox);
+      const $graphbox = $('<div>').addClass(`result-col result-graph`).appendTo($wrapper);
+			d3.select($graphbox[0]).append('svg').attr("class", `chart result-graph-${index}`);
       $('#results').append($wrapper);
-       renderGraph(food, index);
+
+      renderGraph(food, index);
 
     });
   }
@@ -92,15 +93,25 @@ function App() {
 
       $.when.apply($, requestResults).done((...args) => {
         [].slice.call(args).forEach((item) => {
-          FOODS.push(new Food({
-            name: item[0].report.foods[0].name,
-            ndbno: item[0].report.foods[0].ndbno,
-            sugars: {
-              value: item[0].report.foods[0].nutrients[0].value,
-              unitOfMeasure: item[0].report.foods[0].nutrients[0].unit,
-            },
-            servingSize: item[0].report.foods[0].measure,
-          }));
+          if (item[0].report.foods.length > 0) {
+            let name = item[0].report.foods[0].name;
+            name = name.replace(/(,\s)?UPC:\s\d+(,\s)?/, '')
+              .replace(/Cereals\sready-to-eat,\s/, '')
+              .replace(/(,\s)?GTIN:\s\d+(,\s)?/, '');
+            let sugarVal = item[0].report.foods[0].nutrients[0].value;
+            // remove empty decimals
+            sugarVal = sugarVal.replace(/\.00$/, '');
+
+            FOODS.push(new Food({
+              name: name,
+              ndbno: item[0].report.foods[0].ndbno,
+              sugars: {
+                value: sugarVal,
+                unitOfMeasure: item[0].report.foods[0].nutrients[0].unit,
+              },
+              servingSize: item[0].report.foods[0].measure,
+            }));
+          }
         });
 
         render();
