@@ -1,4 +1,8 @@
-
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 
 .navbar {
 	padding-top: 1.25rem;
@@ -6,8 +10,16 @@
   margin-bottom: 0px;
 }
 
-.title {
-  background-color:  rgba(0, 0, 0, .1);
+.title h1 {
+  text-align: center;
+  font-family: 'Monoton', cursive;
+  font-size: 300%;
+}
+
+.sub-header {
+  text-align: center;
+  font-family: 'Bungee', cursive;
+  padding: 2%;
 }
 .search-bar {
   margin-top: 1%;
@@ -31,7 +43,7 @@
   justify-items: unsafe center;
   background-image: url('assets/cheerios.jpg');
   background-size: 1600px;
-  height: 400px;
+  height: 50%;
   overflow: hidden;
 }
 
@@ -42,6 +54,7 @@ img {
 }
 
 .result-wrapper {
+  font: sans-serif;
   display: grid;
   grid-template-columns: 20% 1fr 1fr;
   background-color: #E8E7E7;
@@ -55,9 +68,13 @@ img {
 .result-textbox {
   display: grid;
   text-align: center;
-  grid-template-rows: 10% 1fr 1fr;
+  align-self: center;
+  grid-template-rows: 1fr;
 }
 
+.sugars-subhead {
+  margin: 1%;
+}
 .chart {
   align-self: center;
 }
@@ -68,7 +85,7 @@ img {
 
 .chart text {
   fill: white;
-  font: 14px sans-serif;
+  font: 12px sans-serif;
   text-anchor: end;
 }
 
@@ -89,6 +106,7 @@ img {
 }
 
 .food-img {
+  max-height: 100%;
   align-self: center;
   padding-left: 20%;
 }
@@ -96,3 +114,21 @@ img {
 .food-img {
   max-width: 50%
 }
+
+#footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  font-family: 'Bungee', cursive;
+  text-align: right;
+  align-items: end;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #eee;
+}
+
+#footer-links span {
+  margin-right: 2%;
+  margin-left: 1%;
+}
+

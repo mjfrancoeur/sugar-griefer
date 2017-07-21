@@ -29,20 +29,15 @@ function App() {
     });
   }
 
-  // function imageRequest(food) {
-  //   $.get('http://webservices.amazon.com/onca/xml?', {
-  //     Service: 'AWSECommerceService',
-  //     Operation: 'ItemSearch',
-  //     AWSAccessKeyId: 'AKIAJFL4RV5A6J5GPMDA',
-  //     AssociateTag= 'cereality-20',
-  //     SearchIndex: 'Grocery',
-  //     Keywords: food.name,
-  //     Timestamp= new Date(),
-  //     Signature=[Request Signature],
-  //   }).done( (data) => {
-  //     console.log(data);
-  //   });
-  // }
+  function imageRequest(food, element) {
+    $.get('http://api.giphy.com/v1/gifs/random?', {
+      api_key: '58fdd97a7b79422b8141f6c7a867cc10',
+      tag: food.name,
+    }).done( (data) => {
+      $('<img>').addClass('food-img')
+        .attr('src', data.data.image_url).appendTo(element);
+    });
+  }
 
   function renderGraph(food, index) {
     const currentData = DATA.slice(0);
@@ -53,10 +48,10 @@ function App() {
       return {name: obj.displayName, value: obj.sugars.displayValue};
     });
 
-    const margin = {top: 0, right: 0, bottom: 0, left: 170}
+    const margin = {top: 20, right: 0, bottom: 20, left: 170}
     const width = 550 - margin.left - margin.right;
-    const barHeight = 40;
-    const height = barHeight * dataVals.length;
+    const barHeight = 35;
+    const height = barHeight * dataVals.length ;
 
     const y = d3.scale.ordinal()
       .domain(currentData.map( (food) => { return food.displayName; }))
@@ -68,14 +63,14 @@ function App() {
 
     const chart = d3.select(`.result-graph-${index}`)
       .attr('width', width + margin.left + margin.right)
-      .attr('height', height)
+      .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     const bar = chart.selectAll('g').data(dataVals).enter().append('g')
       .attr('transform',(d, i) => { return `translate(0,${i * barHeight})`; });
 
-    bar.append('rect').attr('width', function(d) { return scale(d.value); }).attr('height', barHeight - 1);
+    bar.append('rect').attr('width', function(d) { return scale(d.value); }).attr('height', barHeight - 2);
 
     bar.append("text")
       .attr("x", (d) => { return scale(d.value) - 3; })
@@ -96,13 +91,11 @@ function App() {
       const $wrapper = $('<div>').addClass('result-wrapper');
 
       const $imgbox = $('<div>').addClass('result-col img-box').appendTo($wrapper);
-      $('<img>').addClass('food-img')
-        .attr('src', 'http://www.freeiconspng.com/uploads/production-icon-31.png').appendTo($imgbox);
-      // imageRequest(food);
+      imageRequest(food, $imgbox);
 
       const $textbox = $('<div>').addClass('result-col result-textbox').appendTo($wrapper);
       $('<h3>').text(food.name).appendTo($textbox);
-      $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).appendTo($textbox);
+      $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).addClass('sugars-subhead').appendTo($textbox);
 
       const $graphbox = $('<div>').addClass(`result-col result-graph`).appendTo($wrapper);
 			d3.select($graphbox[0]).append('svg').attr("class", `chart result-graph-${index}`);
@@ -110,13 +103,54 @@ function App() {
 
       renderGraph(food, index);
 
-      d3.selectAll('.result-wrapper').style('background-color', function(d, i) {
-        return i % 2 ? '#fff' : '#eee';
-      });
     });
+
+    // shrink footer
+    $('#footer').css({'height': '5%'});
+    // Alternate colors for results divs
+    d3.selectAll('.result-wrapper').style('background-color', function(d, i) {
+      return i % 2 ? '#fff' : '#eee';
+    });
+
+    // set mouse enter event to change background-image to product image
+    $('#results').on('mouseenter', '.result-wrapper', function() {
+      const $el = $(this);
+      const $img = $el.find('.food-img');
+      const src = $img.attr('src');
+
+      // set background image, size, and box-shadow for better text visibility
+      $el.css({'background-image': `url(${src})`, 'background-size': 'cover', 'box-shadow': 'inset 0 0 0 1000px rgba(255, 255, 255, .7)'});
+
+      // set text background
+      const $textbox = $el.find('.result-textbox, .result-graph');
+      // $textbox.css({'background-color': 'rgba(255,255,255,.6)'});
+
+      // Option to set the img to flash across the wrapper div for one second
+      // setTimeout( function() {
+      //   $el.css({'background-image': ''});
+      //   $textbox.css({'background-color': 'rgba(0,0,0,0)'});
+      // }, 1000);
+
+
+      //
+      $('#results').on('mouseleave', '.result-wrapper', function() {
+        const $el = $(this);
+        $el.css({'background-image': '', 'box-shadow': ''});
+        $textbox.css({'background-color': 'rgba(0,0,0,0)'});
+      });
+
+    });
+
+
+
+    // $('.result-wrapper').hover( function() {
+    //   console.log($('this').find('img'));
+    //   console.log($('.result-wrapper'));
+    //   //const img = $('this').find('.food-img');
+    //   // console.log(img);
+    //   //$('this').attr('background-image', `url(${img})`);
+    // });
   }
-
-
 
   $('#searchForm').on('submit', (event) => {
     // prevent page from reloading
