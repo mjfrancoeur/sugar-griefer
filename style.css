@@ -1,34 +1,4 @@
-#dropdown-btn {
-  background-color: white;
-  border-color: #ccc;
-  padding: .5rem 1rem;
-}
 
-.dropdown-menu {
-	overflow: hidden;
-}
-
-btn {
-  text-align: center;
-  border: 1px solid transparent;
-  vertical-align: center;
-}
-
-.caret-down::before{
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: .3em;
-    vertical-align: middle;
-    content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
-    border-left: .3em solid transparent;
-}
-
-.click-close::before{
-	content: 'X';
-}
 
 .navbar {
 	padding-top: 1.25rem;
@@ -36,8 +6,13 @@ btn {
   margin-bottom: 0px;
 }
 
+.title {
+  background-color:  rgba(0, 0, 0, .1);
+}
 .search-bar {
-	width: 80%;
+  margin-top: 1%;
+	width: 400px;
+  margin-bottom: 1%;
 }
 
 .nav-link: {
@@ -50,6 +25,12 @@ btn {
 }
 
 .header-image {
+  display: grid;
+  grid-template-rows: 10% 1fr 10%;
+  grid-template-columns: 1fr;
+  justify-items: unsafe center;
+  background-image: url('assets/cheerios.jpg');
+  background-size: 1600px;
   height: 400px;
   overflow: hidden;
 }
@@ -62,7 +43,7 @@ img {
 
 .result-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 20% 1fr 1fr;
   background-color: #E8E7E7;
 }
 
@@ -73,7 +54,8 @@ img {
 
 .result-textbox {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  text-align: center;
+  grid-template-rows: 10% 1fr 1fr;
 }
 
 .chart {
@@ -86,7 +68,7 @@ img {
 
 .chart text {
   fill: white;
-  font: 10px sans-serif;
+  font: 14px sans-serif;
   text-anchor: end;
 }
 
@@ -94,4 +76,23 @@ img {
   
 }
 
+.axis text {
+	fill: black;
+  font: 10px sans-serif;
+}
 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.food-img {
+  align-self: center;
+  padding-left: 20%;
+}
+
+.food-img {
+  max-width: 50%
+}

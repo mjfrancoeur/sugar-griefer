@@ -1,12 +1,14 @@
 function App() {
   const FOODS = [];
-  const DATA = [ new Food( {name: 'chocolate ice-cream', sugars: { value: 17, unitOfMeasure: 'g' }}), new Food( {name: 'cupcake', sugars: { value: 25, unitOfMeasure: 'g' }, }) ];
+  const DATA = [ new Food( {displayName: 'Ben & Jerry\'s chocolate ice cream', sugars: { displayValue: 19, unitOfMeasure: 'g' }}), new Food( {displayName: 'Chips Ahoy! cookie', sugars: { displayValue: 11, unitOfMeasure: 'g' }, }) ];
 
   function Food(params) {
     this.name = params.name;
+    this.displayName = params.displayName;
     this.ndbno = params.ndbno;
     this.sugars = {
       value: params.sugars.value,
+      displayValue: params.sugars.displayValue,
       unitOfMeasure: params.sugars.unitOfMeasure,
     };
     this.servingSize = params.servingSize;
@@ -27,39 +29,76 @@ function App() {
     });
   }
 
+  // function imageRequest(food) {
+  //   $.get('http://webservices.amazon.com/onca/xml?', {
+  //     Service: 'AWSECommerceService',
+  //     Operation: 'ItemSearch',
+  //     AWSAccessKeyId: 'AKIAJFL4RV5A6J5GPMDA',
+  //     AssociateTag= 'cereality-20',
+  //     SearchIndex: 'Grocery',
+  //     Keywords: food.name,
+  //     Timestamp= new Date(),
+  //     Signature=[Request Signature],
+  //   }).done( (data) => {
+  //     console.log(data);
+  //   });
+  // }
+
   function renderGraph(food, index) {
     const currentData = DATA.slice(0);
+
     currentData.unshift(food);
 
     const dataVals = currentData.map( (obj) => {
-      return {name: obj.name, value: obj.sugars.value};
+      return {name: obj.displayName, value: obj.sugars.displayValue};
     });
 
-    const testData = [30, 40, 50];
-    const width = 200;
-    const barHeight = 20;
+    const margin = {top: 0, right: 0, bottom: 0, left: 170}
+    const width = 550 - margin.left - margin.right;
+    const barHeight = 40;
+    const height = barHeight * dataVals.length;
 
+    const y = d3.scale.ordinal()
+      .domain(currentData.map( (food) => { return food.displayName; }))
+      .rangeBands([0, barHeight * currentData.length]);
+
+    // const y = d3.scale.linear()
+    //   .range([height - margin.top - margin.bottom,0]);
     const scale = d3.scale.linear().domain([0, d3.max(dataVals, function(d) { return d.value; })]).range([0, width]);
 
-    const chart = d3.select(`.result-graph-${index}`).attr('width', width).attr('height', barHeight * dataVals.length);
+    const chart = d3.select(`.result-graph-${index}`)
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height)
+      .append('g')
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     const bar = chart.selectAll('g').data(dataVals).enter().append('g')
       .attr('transform',(d, i) => { return `translate(0,${i * barHeight})`; });
 
     bar.append('rect').attr('width', function(d) { return scale(d.value); }).attr('height', barHeight - 1);
 
-     bar.append("text")
+    bar.append("text")
       .attr("x", (d) => { return scale(d.value) - 3; })
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
-      .text( (d) => { return `${d.name}: ${d.value}g`; });
+      .text( (d) => { return `${d.value}g`; });
+
+    // Axes
+		const yAxis = d3.svg.axis().scale(y).orient('left');
+    chart.append("g")
+        .attr("class", "y axis")
+        .attr("transform", `translate(0,0)`)
+        .call(yAxis);
   }
 
   function render() {
     FOODS.forEach((food, index) => {
       const $wrapper = $('<div>').addClass('result-wrapper');
-      $('<img>').addClass('result-col food-img')
-        .attr('src', 'http://www.cheerios.com/~/media/17EE88F6F39C45E787CE2E1186260B94.ashx').appendTo($wrapper);
+
+      const $imgbox = $('<div>').addClass('result-col img-box').appendTo($wrapper);
+      $('<img>').addClass('food-img')
+        .attr('src', 'http://www.freeiconspng.com/uploads/production-icon-31.png').appendTo($imgbox);
+      // imageRequest(food);
 
       const $textbox = $('<div>').addClass('result-col result-textbox').appendTo($wrapper);
       $('<h3>').text(food.name).appendTo($textbox);
@@ -71,6 +110,9 @@ function App() {
 
       renderGraph(food, index);
 
+      d3.selectAll('.result-wrapper').style('background-color', function(d, i) {
+        return i % 2 ? '#fff' : '#eee';
+      });
     });
   }
 
@@ -101,12 +143,20 @@ function App() {
             let sugarVal = item[0].report.foods[0].nutrients[0].value;
             // remove empty decimals
             sugarVal = sugarVal.replace(/\.00$/, '');
+            let displayVal;
+            if (sugarVal < 1) {
+              displayVal = sugarVal;
+            } else {
+              displayVal = sugarVal.replace(/\.\d*/, '');
+            }
 
             FOODS.push(new Food({
               name: name,
+              displayName: 'This product',
               ndbno: item[0].report.foods[0].ndbno,
               sugars: {
                 value: sugarVal,
+                displayValue: displayVal,
                 unitOfMeasure: item[0].report.foods[0].nutrients[0].unit,
               },
               servingSize: item[0].report.foods[0].measure,
