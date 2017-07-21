@@ -3,59 +3,60 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Sugar Griefer</title>
+    <title>Cereal Conspiracy</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Life+Savers|Monoton|Voces" rel="stylesheet">
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src='./app.js'></script>
+
     <link href='./style.css' rel='stylesheet' type='text/css' />
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
+    <!--
+    <nav class="navbar">
+        <div class="navbar-container">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="#">Cereal Monster</a>
           </div>
-          <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Home</a></li>
               <li><a href="#">About</a></li>
               <li><a href="#">Contact</a></li>
             </ul>
-            
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-								<form id="searchForm" action='#'>
-									<input type="hidden" name="format" value="json">
-									<input type="hidden" name="api_key" value="XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w">
-									<input type="hidden" name="max" value="10">
-									<input type='text' name="q" placeholder='Search here' class='search-bar'>
-									<button>Search</button>
-								</form>
-              </li>
-            </ul>
-              
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-    </nav>
-  <!--navbar-->
 
+        </div>
+    </nav>
+  -->
 	<div class='section section-header'>
 		<div class='header-image'>
-			<img src='assets/cheerios.jpg' alt='image'>
+      <div></div>
+      <div class='title'>
+        <h1>THE CEREAL CONSPIRACY</h1>
+        <h2 class='sub-header'>How much sugar are they hiding in YOUR favorite cereal?</h2>
+        <h2 class='sub-header'>Search below to find out.</h2>
+      </div>
+      <form id="searchForm" action='#'>
+        <input type="hidden" name="format" value="json">
+        <input type="hidden" name="api_key" value="XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w">
+        <input type="hidden" name="max" value="10">
+        <input type='text' name="q" placeholder='Search here' class='search-bar'>
+        <button>Search</button>
+      </form>
 		</div>
 	</div>
+  <div id='results-header'>
+  </div>
   <div id='results'>
-    <div id='results-header'>
+  </div>
+
+  <div id='footer'>
+    <div id='footer-links'>
+      <span id='credit'>Built by Michael Francoeur</span>
+      <span id='about-me'><a href='www.michaelfrancoeur.com'>About Me</a></span>
     </div>
+
   </div>
 
 	</body>
