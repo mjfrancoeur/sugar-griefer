@@ -76,7 +76,7 @@ function App() {
       .attr("x", (d) => { return scale(d.value) - 3; })
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
-      .text( (d) => { return `${d.value}g`; });
+      .text( (d) => { return `${d.value < 1 ? '' : d.value +'g'}`; });
 
     // Axes
 		const yAxis = d3.svg.axis().scale(y).orient('left');
