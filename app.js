@@ -1,6 +1,6 @@
 function App() {
   const FOODS = [];
-  const DATA = [ new Food( {displayName: 'Ben & Jerry\'s chocolate ice cream', sugars: { displayValue: 19, unitOfMeasure: 'g' }}), new Food( {displayName: 'Chips Ahoy! cookie', sugars: { displayValue: 11, unitOfMeasure: 'g' }, }) ];
+  const DATA = [new Food( {displayName: 'Ben & Jerry\'s chocolate ice cream', sugars: { displayValue: 19, unitOfMeasure: 'g' }}), new Food( {displayName: 'Chips Ahoy! cookie', sugars: { displayValue: 11, unitOfMeasure: 'g' }, }) ];
 
   function Food(params) {
     this.name = params.name;
@@ -86,6 +86,10 @@ function App() {
         .call(yAxis);
   }
 
+  // Function: Render
+  // ----------------
+  // Create HTML elements for each item in FOOD
+  // and attach to the DOM.
   function render() {
     FOODS.forEach((food, index) => {
       const $wrapper = $('<div>').addClass('result-wrapper');
@@ -98,7 +102,18 @@ function App() {
       $('<h4>').text(`${food.sugars.value}${food.sugars.unitOfMeasure} of sugar per serving`).addClass('sugars-subhead').appendTo($textbox);
 
       const $graphbox = $('<div>').addClass(`result-col result-graph`).appendTo($wrapper);
-			d3.select($graphbox[0]).append('svg').attr("class", `chart result-graph-${index}`);
+
+      // Attemp to create responsive SVG container [currently not working]
+      //    const svgContainer =  d3.select(`.result-graph-${index}`)
+      //      .append('div')
+      //      .classed('svg-container')
+      //      .append('svg')
+      //      .attr("preserveAspectRatio", "xMinYMin meet")
+      //      .attr("viewBox", "0 0 600 400")
+      //      //class to make it responsive
+      //      .classed("svg-content-responsive", true);
+
+      d3.select($graphbox[0]).append('svg').attr("class", `chart result-graph-${index}`);
       $('#results').append($wrapper);
 
       renderGraph(food, index);
@@ -107,6 +122,7 @@ function App() {
 
     // shrink footer
     $('#footer').css({'height': '5%'});
+
     // Alternate colors for results divs
     d3.selectAll('.result-wrapper').style('background-color', function(d, i) {
       return i % 2 ? '#fff' : '#eee';
@@ -132,7 +148,7 @@ function App() {
       // }, 1000);
 
 
-      //
+      // When mouse leaves the HTML element, remove background GIF
       $('#results').on('mouseleave', '.result-wrapper', function() {
         const $el = $(this);
         $el.css({'background-image': '', 'box-shadow': ''});
@@ -140,8 +156,6 @@ function App() {
       });
 
     });
-
-
 
     // $('.result-wrapper').hover( function() {
     //   console.log($('this').find('img'));

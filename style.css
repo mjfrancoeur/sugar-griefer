@@ -5,16 +5,6 @@ html, body {
   margin: 0;
 }
 
-body {
-  position: absol
-}
-
-.navbar {
-	padding-top: 1.25rem;
-	padding-bottom: 1.25rem;
-  margin-bottom: 0px;
-}
-
 .title h1 {
   text-align: center;
   font-family: 'Monoton', cursive;
@@ -26,20 +16,8 @@ body {
   font-family: 'Bungee', cursive;
   padding: 2%;
 }
-.search-bar {
-  margin-top: 1%;
-	width: 400px;
-  margin-bottom: 1%;
-}
 
-.nav-link: {
-	padding-top: .25rem;
-	padding-bottom: .25rem;
-	font-size: 2rem;
-}
 
-.navbar-brand: {
-}
 
 .header-image {
   display: grid;
@@ -61,7 +39,6 @@ body {
   display: block;
   clear: both;
 }
-
 
 img {
   display: block;
@@ -105,10 +82,6 @@ img {
   text-anchor: end;
 }
 
-.result-graph {
-  
-}
-
 .axis text {
 	fill: black;
   font: 10px sans-serif;
@@ -138,9 +111,7 @@ img {
   text-align: right;
   align-items: end;
   width: 100%;
-  height: 50%;
-  background-color: rgb(228, 241, 254);
-}
+  height: 50%; }
 
 #footer-links span {
   margin-right: 2%;
