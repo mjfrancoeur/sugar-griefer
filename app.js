@@ -161,7 +161,7 @@ function App() {
     });
   }
 
-  // Add on submit event listener
+  // Add event listener to submit button
   $('#searchForm').on('submit', (event) => {
     // prevent page from reloading
     event.preventDefault();
@@ -183,9 +183,12 @@ function App() {
             let name = item[0].report.foods[0].name;
 
             // Parse food names returned by API. Replace non-brand/product name info.
+            // Remove UPC code, 'Cereals ready-to-eat', GTIN code
+            // Replace '&amp;' with '&'
             name = name.replace(/(,\s)?UPC:\s\d+(,\s)?/, '')
               .replace(/Cereals\sready-to-eat,\s/, '')
-              .replace(/(,\s)?GTIN:\s\d+(,\s)?/, '');
+              .replace(/(,\s)?GTIN:\s\d+(,\s)?/, '')
+              .replace(/\s&amp;/, ' &');
 
             let sugarVal = item[0].report.foods[0].nutrients[0].value;
 
