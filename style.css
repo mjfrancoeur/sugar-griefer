@@ -1,9 +1,13 @@
 
 html, body {
   min-height: 100%;
-	height: auto;
+	height: 100%;
   width: 100%;
+}
 
+body {
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
 
 .container-fluid {
@@ -110,6 +114,11 @@ img {
   max-width: 50%
 }
 
+footer {
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
 #footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -117,7 +126,8 @@ img {
   text-align: right;
   align-items: end;
   width: 100%;
-  height: 50%; }
+  height: 50%; 
+}
 
 #footer-links span {
   margin-right: 2%;
