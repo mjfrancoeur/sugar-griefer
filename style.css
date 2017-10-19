@@ -1,8 +1,14 @@
 
-html, body {
+body {
   height: 100%;
   width: 100%;
   margin: 0;
+}
+
+.container-fluid {
+  height: 100%;
+  width: 100%;
+  padding: 0%;
 }
 
 .title h1 {
@@ -17,8 +23,6 @@ html, body {
   padding: 2%;
 }
 
-
-
 .header-image {
   display: grid;
   grid-template-rows: 10% 1fr 10%;
@@ -31,7 +35,6 @@ html, body {
 }
 
 .section-header {
-  min-height: 50%;
 }
 
 .section-header:after {
