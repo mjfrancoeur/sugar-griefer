@@ -1,9 +1,12 @@
 function App() {
+  // Array to hold food data
   const FOODS = [];
+
+  // Benchmarks for graphs
   const DATA = [new Food( {displayName: 'Ben & Jerry\'s chocolate ice cream', sugars: { displayValue: 19, unitOfMeasure: 'g' }}), new Food( {displayName: 'Chips Ahoy! cookie', sugars: { displayValue: 11, unitOfMeasure: 'g' }, }) ];
 
   // Constructor Function: Food
-  // --------------
+  // --------------------------
   // Takes an object as an argument.
   // Returns a new Food object with the following
   // properties and methods.
@@ -159,9 +162,7 @@ function App() {
         $el.css({'background-image': '', 'box-shadow': ''});
         $textbox.css({'background-color': 'rgba(0,0,0,0)'});
       });
-
     });
-
   }
 
   // Add on submit event listener
@@ -184,10 +185,14 @@ function App() {
         [].slice.call(args).forEach((item) => {
           if (item[0].report.foods.length > 0) {
             let name = item[0].report.foods[0].name;
+
+            // Parse food names returned by API. Replace non-brand/product name info.
             name = name.replace(/(,\s)?UPC:\s\d+(,\s)?/, '')
               .replace(/Cereals\sready-to-eat,\s/, '')
               .replace(/(,\s)?GTIN:\s\d+(,\s)?/, '');
+
             let sugarVal = item[0].report.foods[0].nutrients[0].value;
+
             // remove empty decimals
             sugarVal = sugarVal.replace(/\.00$/, '');
             let displayVal;
