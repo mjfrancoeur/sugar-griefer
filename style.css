@@ -40,9 +40,6 @@ body {
   overflow: hidden;
 }
 
-.section-header {
-}
-
 .section-header:after {
   content: "";
   display: block;
