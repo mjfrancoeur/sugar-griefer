@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
     <title>Cereal Conspiracy</title>
 
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src='https://code.jquery.com/jquery.min.js'></script>
+    <script src='https://d3js.org/d3.v3.min.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>
     <script src='./app.js'></script>
-    <link href="https://fonts.googleapis.com/css?family=Bungee|Life+Savers|Monoton|Voces" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Bungee|Life+Savers|Monoton|Voces' rel='stylesheet'>
 
     <link href='./style.css' rel='stylesheet' type='text/css' />
   </head>
@@ -23,11 +23,11 @@
           <h2 class='sub-header'>How much sugar are they hiding in YOUR favorite cereal?</h2>
           <h2 class='sub-header'>Search below to find out.</h2>
         </div>
-        <form id="searchForm" action='#'>
-          <input type="hidden" name="format" value="json">
-          <input type="hidden" name="api_key" value="XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w">
-          <input type="hidden" name="max" value="10">
-          <input type='text' name="q" placeholder='Search here' class='search-bar'>
+        <form id='searchForm' action='#'>
+          <input type='hidden' name='format' value='json'>
+          <input type='hidden' name='api_key' value='XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w'>
+          <input type='hidden' name='max' value='10'>
+          <input type='text' name='q' placeholder='Search here' class='search-bar'>
           <button>Search</button>
         </form>
       </div>
@@ -37,14 +37,15 @@
     <div id='results'>
     </div>
 
-    <div id='footer'>
+    </div>
+
+    <footer class='footer' id='footer'>
         <span><img src='assets/giphy-logo.gif' alt='Powered by Giphy'></span>
       <div id='footer-links'>
         <span id='credit'>Built by Michael Francoeur</span>
         <span id='about-me'><a href='http://www.michaelfrancoeur.com'>About Me</a></span>
       </div>
+    </footer>
 
-      </div>
-    </div>
-	</body>
+  </body>
 </html>
