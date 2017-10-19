@@ -2,6 +2,11 @@ function App() {
   const FOODS = [];
   const DATA = [new Food( {displayName: 'Ben & Jerry\'s chocolate ice cream', sugars: { displayValue: 19, unitOfMeasure: 'g' }}), new Food( {displayName: 'Chips Ahoy! cookie', sugars: { displayValue: 11, unitOfMeasure: 'g' }, }) ];
 
+  // Constructor Function: Food
+  // --------------
+  // Takes an object as an argument.
+  // Returns a new Food object with the following
+  // properties and methods.
   function Food(params) {
     this.name = params.name;
     this.displayName = params.displayName;
@@ -15,11 +20,18 @@ function App() {
     this.imgURL = params.imgURL || null;
   }
 
+  // Function: clearPrevSearch
+  // -----------------------
+  // Clears the screen of the results from prev search
   function clearPrevSearch() {
     FOODS.splice(0);
     $('#results').empty();
   }
 
+  // Function: nutrientRequest
+  // ------------------------------
+  // Takes in a foodID (integer as a string) as an argument.
+  // Makes an api call to the USDA.
   function nutrientRequest(foodID) {
     return $.get('https://api.nal.usda.gov/ndb/nutrients/?', {
       api_key: 'XM57A3PgIUrZfDaDxBgSB0Fba56m8jPUO5vbYT5w',
@@ -29,6 +41,12 @@ function App() {
     });
   }
 
+  // Function: imageRequest
+  // ----------------------
+  // Takes a food object and an html element as arguments.
+  // Makes an api call to GIPHY to grab a random gif,
+  // searching on the food object's name. Attaches the gif
+  // to the given HTML element.
   function imageRequest(food, element) {
     $.get('http://api.giphy.com/v1/gifs/random?', {
       api_key: '58fdd97a7b79422b8141f6c7a867cc10',
@@ -39,9 +57,13 @@ function App() {
     });
   }
 
+  // Function: renderGraph
+  // ---------------------
+  // Takes a food object and an index as arguments.
+  // Creates an SVG graph of the food object's sugar content
+  // compared to hardcoded benchmarks, using D3.
   function renderGraph(food, index) {
     const currentData = DATA.slice(0);
-
     currentData.unshift(food);
 
     const dataVals = currentData.map( (obj) => {
@@ -57,8 +79,6 @@ function App() {
       .domain(currentData.map( (food) => { return food.displayName; }))
       .rangeBands([0, barHeight * currentData.length]);
 
-    // const y = d3.scale.linear()
-    //   .range([height - margin.top - margin.bottom,0]);
     const scale = d3.scale.linear().domain([0, d3.max(dataVals, function(d) { return d.value; })]).range([0, width]);
 
     const chart = d3.select(`.result-graph-${index}`)
@@ -79,7 +99,7 @@ function App() {
       .text( (d) => { return `${d.value < 1 ? '' : d.value +'g'}`; });
 
     // Axes
-		const yAxis = d3.svg.axis().scale(y).orient('left');
+    const yAxis = d3.svg.axis().scale(y).orient('left');
     chart.append("g")
         .attr("class", "y axis")
         .attr("transform", `translate(0,0)`)
@@ -91,6 +111,8 @@ function App() {
   // Create HTML elements for each item in FOOD
   // and attach to the DOM.
   function render() {
+
+    // Iterate through FOODS array (populated with data from USDA API call)
     FOODS.forEach((food, index) => {
       const $wrapper = $('<div>').addClass('result-wrapper');
 
@@ -103,19 +125,10 @@ function App() {
 
       const $graphbox = $('<div>').addClass(`result-col result-graph`).appendTo($wrapper);
 
-      // Attemp to create responsive SVG container [currently not working]
-      //    const svgContainer =  d3.select(`.result-graph-${index}`)
-      //      .append('div')
-      //      .classed('svg-container')
-      //      .append('svg')
-      //      .attr("preserveAspectRatio", "xMinYMin meet")
-      //      .attr("viewBox", "0 0 600 400")
-      //      //class to make it responsive
-      //      .classed("svg-content-responsive", true);
-
       d3.select($graphbox[0]).append('svg').attr("class", `chart result-graph-${index}`);
       $('#results').append($wrapper);
 
+      // Call renderGraph function to add SVG graph element to each food div
       renderGraph(food, index);
 
     });
@@ -151,6 +164,7 @@ function App() {
 
   }
 
+  // Add on submit event listener
   $('#searchForm').on('submit', (event) => {
     // prevent page from reloading
     event.preventDefault();
@@ -183,6 +197,7 @@ function App() {
               displayVal = sugarVal.replace(/\.\d*/, '');
             }
 
+            // Add new food object to the FOODS array
             FOODS.push(new Food({
               name: name,
               displayName: 'This product',
