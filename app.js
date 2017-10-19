@@ -139,14 +139,6 @@ function App() {
 
       // set text background
       const $textbox = $el.find('.result-textbox, .result-graph');
-      // $textbox.css({'background-color': 'rgba(255,255,255,.6)'});
-
-      // Option to set the img to flash across the wrapper div for one second
-      // setTimeout( function() {
-      //   $el.css({'background-image': ''});
-      //   $textbox.css({'background-color': 'rgba(0,0,0,0)'});
-      // }, 1000);
-
 
       // When mouse leaves the HTML element, remove background GIF
       $('#results').on('mouseleave', '.result-wrapper', function() {
@@ -157,13 +149,6 @@ function App() {
 
     });
 
-    // $('.result-wrapper').hover( function() {
-    //   console.log($('this').find('img'));
-    //   console.log($('.result-wrapper'));
-    //   //const img = $('this').find('.food-img');
-    //   // console.log(img);
-    //   //$('this').attr('background-image', `url(${img})`);
-    // });
   }
 
   $('#searchForm').on('submit', (event) => {
